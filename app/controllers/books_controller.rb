@@ -10,6 +10,7 @@ class BooksController < ApplicationController
   else
     render :new
   end
+  
   end
 
   def index
@@ -36,6 +37,22 @@ class BooksController < ApplicationController
     book.destroy
     redirect_to '/books'
   end
+  
+  def new
+    @book = Book.new
+  end
+
+  def create
+    book = Book.new(book_params)
+    if book.save
+    flash[:notice] = "投稿が成功しました"
+    redirect_to book_path(book.id)
+  else
+    flash[:alret] = "投稿が失敗しました"
+    @books = Book.all
+    render "index"
+  end
+end
   
    private
   def book_params
